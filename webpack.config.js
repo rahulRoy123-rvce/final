@@ -44,6 +44,9 @@ const asset_entry = path.join("src", frontendDirectory, "src", "index.html");
 
 module.exports = {
   target: "web",
+  stats: {
+    errorDetails: true,
+  },
   mode: isDevelopment ? "development" : "production",
   entry: {
     // The frontend.entrypoint points to the HTML file for this build, so we need
@@ -56,6 +59,10 @@ module.exports = {
     minimizer: [new TerserPlugin()],
   },
   resolve: {
+    alias: {
+      buffer: require.resolve("buffer/"),
+      process: require.resolve("process/browser"),
+    },
     extensions: [".js", ".ts", ".jsx", ".tsx"],
     fallback: {
       assert: require.resolve("assert/"),
@@ -105,7 +112,6 @@ module.exports = {
       process: require.resolve("process/browser"),
     }),
   ],
-  // proxy /api to port 8000 during development
   devServer: {
     historyApiFallback: true,
     proxy: {
